@@ -1,0 +1,2 @@
+class NotebookDecorator < ProductDecorator
+end

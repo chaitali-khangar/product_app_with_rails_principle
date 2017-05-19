@@ -1,0 +1,38 @@
+
+<div class="table-responsive">    
+  <h2>Product Details</h2>      
+  <table class="table">
+  	<thead>
+  		<th>Product Name</th>
+  		<th>Price</th>
+  		<th>Inward Date</th>
+  		<th>Product Type</th>
+  		<th>Product Color</th>
+  	</thead>
+  	<tbody>
+  		<% @products.each do |product| %>
+  		  <tr>
+  		  	<td><%= product.name %></td>
+  		  	<td><%= product.price %></td>
+  		  	<td><%= product.display_inward_date %></td>
+  		  	<td><%= product.type %></td>
+  		  	<td><%= product.get_color %></td>
+  		  </tr>
+  		<% end %>
+  	</tbody>
+  </table>
+</div>
+
+<div class="container">
+	<div class="row">
+	<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Add Product
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <% Product::TYPES.each do |product_type| %>
+        <li><a href="<%= new_product_path(type: product_type)%>"><%= product_type%></a></li>
+      <% end %>  
+    </ul>
+</div>
+	</div>
+</div>
