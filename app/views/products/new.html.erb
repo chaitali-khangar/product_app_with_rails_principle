@@ -1,6 +1,21 @@
+<script type="text/javascript">
+  
+function loadCalender(){
+  $('.datepicker').datepicker( {
+    format: 'dd-mm-yyyy',
+      startDate: '-1m',
+      endDate: '0d',
+      setDate: new Date()
+    });
+}
+
+$(document).ready(function(){
+  loadCalender();
+})
+</script>
 <div class="container">
   <h2><%= @product.display_heading %> </h2>
-  <%= form_for @product, url: products_path(@product) do |form| %>
+  <%= form_for @product, :as => :product, url: products_path(@product) do |form| %>
     <div class="error">
     	<% if @product.errors.any? %>
     	  <h4><%= @product.type %> not saved. please refer below errors:</h4>
@@ -9,6 +24,7 @@
     	  <% end %>
     	<% end %>
     </div>
+    <%= form.hidden_field :type, :value=> @product.type %>
     <div class="form-group">
       <%= form.label "Product name" %>
       <%= form.text_field :name, :class=> "form-control"%>
@@ -19,12 +35,14 @@
     </div>
     <div class="form-group">
       <%= form.label "Inward Date" %>
-      <%= form.date_select :inward_date, :order => [:month,:day,:year], :class=> "form-control"%>
+      <%= form.text_field :inward_date, :class=> "datepicker"%>
     </div>
+    <% if @product.type == Product::TYPES[1] %>
     <div class="form-group">
       <%= form.label "Color" %>
       <%= form.text_field :color, :class=> "form-control"%>
-    </div> 	
+    </div> 
+    <% end %>	
     <%= form.submit "Create #{@product.type}",:class=>"btn btn-default	" %>       
   <% end %>
 </div>

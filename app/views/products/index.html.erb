@@ -30,7 +30,7 @@
     <span class="caret"></span></button>
     <ul class="dropdown-menu">
       <% Product::TYPES.each do |product_type| %>
-        <li><a href="<%= new_product_path(type: product_type)%>"><%= product_type%></a></li>
+        <li><a href="<%= new_product_path(type: product_type)%>">Add <%= product_type%></a></li>
       <% end %>  
     </ul>
 </div>

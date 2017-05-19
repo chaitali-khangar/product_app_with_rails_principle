@@ -10,29 +10,20 @@ class ProductsController < ApplicationController
   end
 
   def create
-   model_name = get_type_name[0]
-   @product = model_name.camelize.constantize.new(permit_params)
-    if @product.save
-      redirect_to products_path,notice: "#{model_name.camelize} is successfully created"
-    else
-      render :new
+   @product = Product.new(permit_params)
+    respond_to do |format|
+      if @product.save
+        format.html{redirect_to products_path,notice: "#{@product.type} is successfully created"}
+      else
+        format.html{render :new}
+      end
     end
   end
 
   private
 
-  def get_type_name
-    type_name,attributes = if params[:notebook].present?
-      ["notebook",[:name,:price,:inward_date]]
-    elsif params[:pen].present?
-      ["pen",[:name,:price,:inward_date,:color]]
-    end
-    [type_name,attributes]
-  end
-
   def permit_params
-    model_name,attributes = get_type_name
-  	params.require(model_name).permit(attributes)
+   params.require(:product).permit(:name,:price,:color,:inward_date)
   end
 
 

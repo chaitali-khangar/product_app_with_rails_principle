@@ -1,14 +1,22 @@
 class Product < ActiveRecord::Base
+  include Price
+  include FormatDate
 
-  validates_presence_of :name
+  validates_presence_of :name,:inward_date,:price
   validate :format_of_price
   validate :validate_inward_date
 
+  before_validation :set_inward_date
   TYPES = %w{Notebook Pen}
+
 
   def self.get_class(type)
   	return self if type.nil?
   	eval(type) rescue nil
+  end
+
+  def self.price_sum(type)
+    Price.price_sum(type)
   end
 
   def validate_inward_date
@@ -18,7 +26,7 @@ class Product < ActiveRecord::Base
   end
 
   def format_of_price
-  	if self.price.present? && self.price.to_s.match(/\A\d{8}.\d{2}\z/).nil?
+  	if self.price.present? && self.price.to_s.match(/\A\d{1,8}.\d{2}\z/).nil?
   	  errors.add(:price, "is not valid price. Precision should be 8 and scala should be 2")
   	end
   end
@@ -26,5 +34,6 @@ class Product < ActiveRecord::Base
   def method_missing(m, *args, &block)
     self.decorate.send(m) if ProductDecorator.instance_methods(true).include?(m)
   end
+
 
 end
