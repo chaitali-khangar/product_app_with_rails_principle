@@ -15,7 +15,8 @@ class Product < ActiveRecord::Base
   	eval(type) rescue nil
   end
 
-  def self.price_sum(type)
+  def self.price_sum(product_type={})
+    type = product_type.is_a?(Hash) ? product_type.values[0] : product_type
     Price.price_sum(type)
   end
 
