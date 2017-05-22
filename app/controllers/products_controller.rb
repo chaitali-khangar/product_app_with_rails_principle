@@ -23,7 +23,8 @@ class ProductsController < ApplicationController
   private
 
   def permit_params
-   params.require(:product).permit(:name,:price,:color,:inward_date)
+   new_product = Product.new(type:params[:product][:type])
+   params.require(:product).permit(new_product.permited_parameters)
   end
 
 

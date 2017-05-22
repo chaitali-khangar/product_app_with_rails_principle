@@ -1,6 +1,7 @@
 class Product < ActiveRecord::Base
   include Price
   include FormatDate
+  include Content::Attributes
 
   validates_presence_of :name,:inward_date,:price
   validate :format_of_price
@@ -34,6 +35,10 @@ class Product < ActiveRecord::Base
 
   def method_missing(m, *args, &block)
     self.decorate.send(m) if ProductDecorator.instance_methods(true).include?(m)
+  end
+
+  def permited_parameters
+    self.get_allowed_attributes
   end
 
 
